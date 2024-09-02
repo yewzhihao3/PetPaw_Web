@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./AuthContext";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+
+const PrivateRoute = ({ children }) => {
+  const { user } = useAuth();
+  console.log("PrivateRoute - user:", user); // Add this line
+  return user?.role === "SHOP_OWNER" ? children : <Navigate to="/login" />;
+};
 
 function App() {
+  const { user } = useAuth();
+
+  useEffect(() => {
+    console.log("App - user:", user); // Add this line
+  }, [user]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route
+        path="/login"
+        element={
+          user?.role === "SHOP_OWNER" ? <Navigate to="/dashboard" /> : <Login />
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route path="/" element={<Navigate to="/dashboard" />} />
+    </Routes>
   );
 }
 
-export default App;
+const AppWithAuth = () => (
+  <AuthProvider>
+    <Router>
+      <App />
+    </Router>
+  </AuthProvider>
+);
+
+export default AppWithAuth;

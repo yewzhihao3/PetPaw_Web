@@ -1,0 +1,184 @@
+:root {
+  --primary-purple: #6a1b9a;
+  --light-purple: #9c4dcc;
+  --dark-purple: #38006b;
+  --nested-purple: #7b1fa2;
+  --hover-purple: #8e24aa;
+  --accent-purple: #e1bee7;
+  --white: #ffffff;
+  --light-gray: #f5f5f5;
+  --medium-gray: #e0e0e0;
+  --text-dark: #333333;
+  --green: #66bb6a;
+  --orange: #ffa726;
+  --blue: #26c6da;
+  --red: #ef5350;
+}
+
+.orderItem {
+  background-color: var(--white);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.orderItem:hover {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.orderSummary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background-color: var(--dark-purple);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.orderInfoLeft,
+.orderInfoRight {
+  display: flex;
+  align-items: center;
+}
+
+.orderNumber {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.orderDate {
+  font-size: 0.9em;
+}
+
+.statusBadge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+.orderAmount {
+  font-weight: bold;
+  margin-right: 10px;
+  color: var(--green);
+}
+
+.orderDetails {
+  padding: 15px;
+}
+
+.customerInfoContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.customerInfo,
+.addressInfo {
+  flex: 1;
+}
+
+.customerInfo {
+  padding-right: 15px;
+  border-right: 1px solid var(--medium-gray);
+}
+
+.addressInfo {
+  padding-left: 15px;
+}
+
+.customerInfo h4,
+.addressInfo h4 {
+  color: var(--dark-purple);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.customerInfo h4 svg,
+.addressInfo h4 svg {
+  margin-right: 8px;
+}
+
+.customerInfo p,
+.addressInfo p {
+  margin: 5px 0;
+  color: var(--text-dark);
+}
+
+.itemList {
+  margin-top: 15px;
+}
+
+.itemList h4 {
+  color: var(--dark-purple);
+  margin-bottom: 10px;
+}
+
+.itemList ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.itemList li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  color: var(--text-dark);
+}
+
+.itemName {
+  flex-grow: 1;
+}
+
+.itemQuantity,
+.itemPrice {
+  margin-left: 10px;
+}
+
+.orderSummaryDetails {
+  background-color: var(--dark-purple);
+  color: var(--white);
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.orderSummaryDetails h4 {
+  margin-bottom: 10px;
+}
+
+.orderSummaryDetails p {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+.summaryItem {
+  font-weight: bold;
+}
+
+/* Status colors */
+.statusDELIVERED {
+  background-color: var(--green);
+}
+.statusON_THE_WAY {
+  background-color: var(--orange);
+}
+.statusRIDER_ACCEPTED {
+  background-color: var(--blue);
+}
+.statusPENDING {
+  background-color: var(--orange);
+}
+.statusCANCELLED {
+  background-color: var(--red);
+}
+.statusACCEPTED {
+  background-color: var(--light-purple);
+}

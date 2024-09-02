@@ -1,0 +1,150 @@
+.orderListCard {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.orderListCard h2 {
+  color: #6a1b9a;
+  margin-bottom: 15px;
+}
+
+.orderList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.orderListItem {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  transition: background-color 0.3s ease;
+}
+
+.orderListItem:hover {
+  background-color: #e0e0e0;
+}
+
+.orderItem {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.orderHeader {
+  background-color: #4a148c;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+}
+
+.orderStatus {
+  background-color: #4a148c;
+  border-radius: 12px;
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
+
+.orderDetails {
+  padding: 20px;
+}
+
+.orderInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.customerInfo,
+.deliveryInfo {
+  flex: 1;
+}
+
+.customerInfo h3,
+.deliveryInfo h3,
+.orderItems h3 {
+  color: #6a1b9a;
+  margin-bottom: 10px;
+}
+
+.orderSummary h3 {
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.orderItems table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orderItems th,
+.orderItems td {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 10px;
+  text-align: left;
+}
+
+.orderItems th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.orderSummary {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-top: 20px;
+  padding: 15px;
+}
+
+.orderSummary p {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.orderActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.acceptButton,
+.declineButton {
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 10px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.acceptButton {
+  background-color: #4caf50;
+}
+
+.acceptButton:hover {
+  background-color: #45a049;
+}
+
+.declineButton {
+  background-color: #f44336;
+}
+
+.declineButton:hover {
+  background-color: #d32f2f;
+}

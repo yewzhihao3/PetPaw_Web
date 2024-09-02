@@ -1,0 +1,248 @@
+:root {
+  --primary-purple: #6a1b9a;
+  --light-purple: #9c4dcc;
+  --dark-purple: #38006b;
+  --background-color: #f9f9f9;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --text-light: #666666;
+  --border-color: #e0e0e0;
+}
+
+.money-earned-container {
+  background-color: var(--background-color);
+  border-radius: 12px;
+  padding: 24px;
+  font-family: "Arial", sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header h2 {
+  display: flex;
+  align-items: center;
+  color: var(--primary-purple);
+  font-size: 24px;
+  margin: 0;
+}
+
+.header h2 svg {
+  margin-right: 12px;
+}
+
+.export-btn {
+  background-color: var(--primary-purple);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.export-btn:hover {
+  background-color: var(--light-purple);
+}
+
+.export-btn svg {
+  margin-right: 8px;
+}
+
+.period-tab {
+  background-color: transparent;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  flex-grow: 1;
+  font-size: 14px;
+  color: var(--dark-purple);
+}
+
+.period-tab:hover,
+.period-tab.active {
+  background-color: var(--primary-purple);
+  color: white;
+}
+
+.period-tab {
+  background-color: transparent;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  flex-grow: 1;
+  font-size: 14px;
+  color: var(--dark-purple);
+}
+
+.period-tab.active {
+  background-color: var(--primary-purple);
+  color: white;
+}
+
+.summary-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.stat-item {
+  background-color: var(--card-background);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  flex-basis: 30%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: var(--text-light);
+}
+
+.stat-item p {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-purple);
+}
+
+.main-chart {
+  background-color: var(--card-background);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-chart h3 {
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.main-chart h3 svg {
+  margin-right: 10px;
+  color: var(--primary-purple);
+}
+
+.additional-insights {
+  display: flex;
+  justify-content: space-between;
+}
+
+.insight-card {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 20px;
+  width: 30%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.insight-card h3 {
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.insight-card h3 svg {
+  margin-right: 10px;
+  color: var(--primary-purple);
+}
+
+.top-products ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.top-products li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.forecast p {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.forecast-bar {
+  height: 8px;
+  background-color: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.forecast-progress {
+  height: 100%;
+  background-color: var(--primary-purple);
+}
+
+.forecast-label {
+  font-size: 12px;
+  color: var(--text-light);
+  text-align: right;
+  margin-top: 8px;
+}
+
+.insight-card.revenue-breakdown {
+  position: relative;
+}
+
+.insight-card.revenue-breakdown .recharts-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes pieJump {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-3px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  75% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.recharts-sector:hover {
+  animation: pieJump 1s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@media (max-width: 768px) {
+  .summary-stats,
+  .additional-insights {
+    flex-direction: column;
+  }
+
+  .stat-item,
+  .insight-card {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+}
