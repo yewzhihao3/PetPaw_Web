@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import {
@@ -8,16 +8,12 @@ import {
   fetchCategories,
   handleOrderAction,
 } from "../apiService";
-import OrderItem from "../components/OrderItem";
-import OrderHistoryItem from "../components/OrderHistoryItem";
-import MoneyEarned from "../components/MoneyEarned";
-import {
-  FaShoppingBag,
-  FaHistory,
-  FaSpinner,
-  FaClinicMedical,
-  FaHotel,
-} from "react-icons/fa";
+import Sidebar from "./Sidebar";
+import OrderItem from "../components//Order/OrderItem";
+import OrderHistoryItem from "../components/Order/OrderHistoryItem";
+import MoneyEarned from "../components//Order/MoneyEarned";
+import Appointments from "../pages/VetManagement/Appointments";
+import { FaShoppingBag, FaHistory, FaSpinner, FaHotel } from "react-icons/fa";
 import styles from "../styles/Dashboard.module.css";
 
 const Dashboard = () => {
@@ -33,82 +29,9 @@ const Dashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const menuItems = [
-    {
-      name: "Shop",
-      icon: <FaShoppingBag />,
-      subItems: ["Order Management", "Order History", "Money Earned"],
-    },
-    { name: "Clinics", icon: <FaClinicMedical /> },
-    { name: "Hotel", icon: <FaHotel /> },
-  ];
-
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const [pendingOrdersData, allOrdersData, productsData, categoriesData] =
-          await Promise.all([
-            fetchOrders(user.token),
-            fetchAllOrders(user.token),
-            fetchProducts(user.token),
-            fetchCategories(user.token),
-          ]);
-        setPendingOrders(pendingOrdersData);
-        setAllOrders(allOrdersData);
-        setProducts(productsData);
-        setCategories(categoriesData);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError(`Failed to fetch data: ${err.message}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (user?.token) {
-      loadData();
-    } else {
-      setError("No user token available. Please log in again.");
-    }
-  }, [user]);
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
-  const handleAcceptOrder = async (orderId) => {
-    try {
-      await handleOrderAction(orderId, "accept", user.token);
-      const [updatedPendingOrders, updatedAllOrders] = await Promise.all([
-        fetchOrders(user.token),
-        fetchAllOrders(user.token),
-      ]);
-      setPendingOrders(updatedPendingOrders);
-      setAllOrders(updatedAllOrders);
-    } catch (error) {
-      console.error("Error accepting order:", error);
-    }
-  };
-
-  const handleDeclineOrder = async (orderId) => {
-    try {
-      await handleOrderAction(orderId, "decline", user.token);
-      const [updatedPendingOrders, updatedAllOrders] = await Promise.all([
-        fetchOrders(user.token),
-        fetchAllOrders(user.token),
-      ]);
-      setPendingOrders(updatedPendingOrders);
-      setAllOrders(updatedAllOrders);
-    } catch (error) {
-      console.error("Error declining order:", error);
-    }
-  };
-
-  const handleRefresh = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       const [pendingOrdersData, allOrdersData, productsData, categoriesData] =
         await Promise.all([
@@ -122,75 +45,57 @@ const Dashboard = () => {
       setProducts(productsData);
       setCategories(categoriesData);
     } catch (err) {
-      setError("Failed to refresh data");
+      console.error("Error fetching data:", err);
+      setError(`Failed to fetch data: ${err.message}`);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+  }, [user]);
+
+  useEffect(() => {
+    if (user?.token) {
+      fetchData();
+    } else {
+      setError("No user token available. Please log in again.");
+    }
+  }, [user, fetchData]);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
   };
 
-  if (loading)
-    return (
-      <div className={styles.loading}>
-        <FaSpinner className={styles.spinner} /> Loading...
-      </div>
-    );
-  if (error) return <div className={styles.error}>{error}</div>;
+  const handleRefresh = async () => {
+    await fetchData();
+  };
 
-  return (
-    <div className={styles.dashboard}>
-      <aside className={styles.sidebar}>
-        <h2>PETPAW Dashboard</h2>
-        <nav>
-          <ul>
-            {menuItems.map((item) => (
-              <li key={item.name}>
-                <span
-                  className={activeMenuItem === item.name ? styles.active : ""}
-                  onClick={() => {
-                    setActiveMenuItem(item.name);
-                    if (item.subItems) {
-                      setActiveSubMenuItem(item.subItems[0]);
-                    }
-                  }}
-                >
-                  {item.icon}
-                  {item.name}
-                </span>
-                {item.subItems && activeMenuItem === item.name && (
-                  <ul>
-                    {item.subItems.map((subItem) => (
-                      <li
-                        key={subItem}
-                        className={
-                          activeSubMenuItem === subItem ? styles.active : ""
-                        }
-                        onClick={() => setActiveSubMenuItem(subItem)}
-                      >
-                        {subItem}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
-      <main className={styles.mainContent}>
-        <header className={styles.header}>
-          <h1>PetPaw Shop {activeSubMenuItem}</h1>
-          <div>
-            <button onClick={handleRefresh} className={styles.refreshButton}>
-              Refresh
-            </button>
-            <button onClick={handleLogout} className={styles.logoutButton}>
-              Logout
-            </button>
-          </div>
-        </header>
-        <div className={styles.orderList}>
-          {activeMenuItem === "Shop" &&
-            activeSubMenuItem === "Order Management" &&
-            (pendingOrders.length > 0 ? (
+  const handleAcceptOrder = async (orderId) => {
+    try {
+      await handleOrderAction(orderId, "accept", user.token);
+      await fetchData();
+    } catch (error) {
+      console.error("Error accepting order:", error);
+      alert("Failed to accept order. Please try again.");
+    }
+  };
+
+  const handleDeclineOrder = async (orderId) => {
+    try {
+      await handleOrderAction(orderId, "decline", user.token);
+      await fetchData();
+    } catch (error) {
+      console.error("Error declining order:", error);
+      alert("Failed to decline order. Please try again.");
+    }
+  };
+
+  const renderShopContent = () => {
+    switch (activeSubMenuItem) {
+      case "Order Management":
+        return (
+          <div className={styles.orderList}>
+            <h2>Pending Orders</h2>
+            {pendingOrders.length > 0 ? (
               pendingOrders.map((order) => (
                 <OrderItem
                   key={order.id}
@@ -205,52 +110,122 @@ const Dashboard = () => {
                 <FaShoppingBag className={styles.noDataIcon} />
                 <p>No pending orders at the moment.</p>
               </div>
-            ))}
-          {activeMenuItem === "Shop" &&
-            activeSubMenuItem === "Order History" && (
-              <div className={styles.orderHistory}>
-                <h2>Order History</h2>
-                {allOrders.length > 0 ? (
-                  allOrders.map((order) => (
-                    <OrderHistoryItem
-                      key={order.id}
-                      order={order}
-                      products={products}
-                    />
-                  ))
-                ) : (
-                  <div className={styles.noData}>
-                    <FaHistory className={styles.noDataIcon} />
-                    <p>No order history available.</p>
-                  </div>
-                )}
+            )}
+          </div>
+        );
+      case "Order History":
+        return (
+          <div className={styles.orderHistory}>
+            <h2>Order History</h2>
+            {allOrders.length > 0 ? (
+              allOrders.map((order) => (
+                <OrderHistoryItem
+                  key={order.id}
+                  order={order}
+                  products={products}
+                />
+              ))
+            ) : (
+              <div className={styles.noData}>
+                <FaHistory className={styles.noDataIcon} />
+                <p>No order history available.</p>
               </div>
             )}
-          {activeMenuItem === "Shop" &&
-            activeSubMenuItem === "Money Earned" && (
-              <MoneyEarned
-                allOrders={allOrders}
-                products={products}
-                categories={
-                  categories.length > 0
-                    ? categories
-                    : [{ _id: "uncategorized", name: "Uncategorized" }]
-                }
-              />
-            )}
-          {activeMenuItem === "Clinics" && (
-            <div className={styles.noData}>
-              <FaClinicMedical className={styles.noDataIcon} />
-              <p>Clinic management coming soon!</p>
-            </div>
-          )}
-          {activeMenuItem === "Hotel" && (
-            <div className={styles.noData}>
-              <FaHotel className={styles.noDataIcon} />
-              <p>Hotel management coming soon!</p>
-            </div>
-          )}
-        </div>
+          </div>
+        );
+      case "Money Earned":
+        return (
+          <MoneyEarned
+            allOrders={allOrders}
+            products={products}
+            categories={
+              categories.length > 0
+                ? categories
+                : [{ _id: "uncategorized", name: "Uncategorized" }]
+            }
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderClinicContent = () => {
+    switch (activeSubMenuItem) {
+      case "Appointments":
+        return <Appointments />;
+      case "Services":
+        return (
+          <div className={styles.clinicSection}>
+            <h2>Clinic Services</h2>
+            <p className={styles.noDataText}>No services available.</p>
+          </div>
+        );
+      case "Staff":
+        return (
+          <div className={styles.clinicSection}>
+            <h2>Clinic Staff</h2>
+            <p className={styles.noDataText}>No staff information available.</p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderContent = () => {
+    switch (activeMenuItem) {
+      case "Shop":
+        return renderShopContent();
+      case "Clinics":
+        return renderClinicContent();
+      case "Hotel":
+        return (
+          <div className={styles.noData}>
+            <FaHotel className={styles.noDataIcon} />
+            <p>Hotel management coming soon!</p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.loading}>
+        <FaSpinner className={styles.spinner} /> Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className={styles.error}>{error}</div>;
+  }
+
+  return (
+    <div className={styles.dashboard}>
+      <Sidebar
+        activeMenuItem={activeMenuItem}
+        setActiveMenuItem={setActiveMenuItem}
+        activeSubMenuItem={activeSubMenuItem}
+        setActiveSubMenuItem={setActiveSubMenuItem}
+      />
+      <main className={styles.mainContent}>
+        <header className={styles.header}>
+          <h1>
+            PetPaw {activeMenuItem} - {activeSubMenuItem}
+          </h1>
+          <div>
+            <button onClick={handleRefresh} className={styles.refreshButton}>
+              Refresh
+            </button>
+            <button onClick={handleLogout} className={styles.logoutButton}>
+              Logout
+            </button>
+          </div>
+        </header>
+        <div className={styles.content}>{renderContent()}</div>
       </main>
     </div>
   );

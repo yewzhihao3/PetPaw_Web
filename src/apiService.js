@@ -16,12 +16,7 @@ export const fetchOrders = async (token) => {
       );
     }
     const data = await response.json();
-    console.log("Raw orders data:", JSON.stringify(data, null, 2));
     const pendingOrders = data.filter((order) => order.status === "PENDING");
-    console.log(
-      "Filtered pending orders:",
-      JSON.stringify(pendingOrders, null, 2)
-    );
     return pendingOrders;
   } catch (error) {
     console.error("Error fetching orders:", error);

@@ -20,7 +20,7 @@ import {
   FaChartPie,
   FaChartLine,
 } from "react-icons/fa";
-import "../styles/MoneyEarned.css";
+import "../../styles/MoneyEarned.css";
 
 const COLORS = ["#8884d8", "#9c27b0", "#673ab7", "#4a148c", "#e1bee7"];
 

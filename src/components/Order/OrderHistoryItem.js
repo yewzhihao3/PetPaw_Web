@@ -7,7 +7,7 @@ import {
   FaMoneyBillWave,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import "../styles/OrderHistoryItem.css";
+import "../../styles/OrderHistoryItem.css";
 
 const OrderHistoryItem = ({ order, products }) => {
   const [expanded, setExpanded] = useState(false);

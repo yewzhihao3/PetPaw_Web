@@ -1,0 +1,265 @@
+.appointmentsContainer {
+  display: flex;
+  height: 100%;
+  background-color: #f5f7fa;
+}
+
+.appointmentsList {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.appointmentDetails {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.appointmentItem {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.appointmentItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.appointmentItem.selected {
+  border-left: 4px solid #6200ee;
+}
+
+.appointmentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dateTime {
+  font-weight: bold;
+  color: #333;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status.scheduled {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.status.confirmed {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.status.in_progress {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.status.completed {
+  background-color: #f1f8e9;
+  color: #689f38;
+}
+
+.status.cancelled {
+  background-color: #ffebee;
+  color: #d32f2f;
+}
+
+.appointmentBody {
+  display: flex;
+  justify-content: space-between;
+}
+
+.petName {
+  font-weight: bold;
+  color: #6200ee;
+}
+
+.serviceName {
+  color: #666;
+}
+
+.appointmentDetails h3 {
+  color: #6200ee;
+  margin-bottom: 20px;
+}
+
+.appointmentDetails p {
+  margin-bottom: 10px;
+}
+
+.appointmentDetails h4 {
+  color: #6200ee;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.actionButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.acceptButton {
+  background-color: #4caf50;
+}
+
+.arrivedButton {
+  background-color: #2196f3;
+}
+
+.completeButton {
+  background-color: #ff9800;
+}
+
+.medicalRecordButton {
+  background-color: #9c27b0;
+}
+
+.prescriptionButton {
+  background-color: #00bcd4;
+}
+
+.declineButton {
+  background-color: #f44336;
+}
+
+.confirmDeclineButton {
+  background-color: #ff7043;
+}
+
+.actionButton:hover {
+  filter: brightness(90%);
+}
+
+.declineContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.declineInput {
+  flex-grow: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.completedActions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.completedActions button {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.completedActions button:last-child {
+  margin-right: 0;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 18px;
+  color: #6200ee;
+}
+
+.error {
+  color: #f44336;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* Modal styles */
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  outline: none;
+  max-width: 500px;
+  width: 90%;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal h2 {
+  color: #6200ee;
+  margin-bottom: 20px;
+}
+
+.modal button {
+  background-color: #6200ee;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.modal button:hover {
+  background-color: #5000d3;
+}
+
+.declineReason {
+  background-color: #ffebee;
+  border-left: 4px solid #f44336;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.declineReason strong {
+  color: #d32f2f;
+}
