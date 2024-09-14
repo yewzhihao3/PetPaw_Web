@@ -130,3 +130,42 @@
   color: #6b7280;
   font-style: italic;
 }
+
+.declineContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.declineInput {
+  padding: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.confirmDeclineButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.confirmDeclineButton:hover {
+  background-color: #d32f2f;
+}
+
+.declineButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.declineButton:hover {
+  background-color: #d32f2f;
+}

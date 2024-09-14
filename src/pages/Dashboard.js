@@ -9,9 +9,9 @@ import {
   handleOrderAction,
 } from "../apiService";
 import Sidebar from "./Sidebar";
-import OrderItem from "../components//Order/OrderItem";
+import OrderItem from "../components/Order/OrderItem";
 import OrderHistoryItem from "../components/Order/OrderHistoryItem";
-import MoneyEarned from "../components//Order/MoneyEarned";
+import MoneyEarned from "../components/Order/MoneyEarned";
 import Appointments from "../pages/VetManagement/Appointments";
 import { FaShoppingBag, FaHistory, FaSpinner, FaHotel } from "react-icons/fa";
 import styles from "../styles/Dashboard.module.css";
@@ -79,9 +79,9 @@ const Dashboard = () => {
     }
   };
 
-  const handleDeclineOrder = async (orderId) => {
+  const handleDeclineOrder = async (orderId, declineReason) => {
     try {
-      await handleOrderAction(orderId, "decline", user.token);
+      await handleOrderAction(orderId, "decline", user.token, declineReason);
       await fetchData();
     } catch (error) {
       console.error("Error declining order:", error);

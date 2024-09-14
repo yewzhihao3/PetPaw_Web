@@ -1,81 +1,87 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
-  FaChevronDown,
-  FaChevronUp,
   FaUser,
+  FaMapMarkerAlt,
   FaShoppingCart,
   FaMoneyBillWave,
-  FaMapMarkerAlt,
+  FaChevronUp,
+  FaChevronDown,
 } from "react-icons/fa";
-import "../../styles/OrderItem.css";
+import styles from "../../styles/OrderItem.module.css";
+import DeclineModal from "./DeclineModal";
 
-const OrderItem = ({ order, products, onAccept, onDecline }) => {
+const OrderItem = ({ order, onAccept, onDecline, products }) => {
   const [expanded, setExpanded] = useState(false);
+  const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
 
-  const toggleExpand = () => setExpanded(!expanded);
+  const getProductName = useCallback(
+    (sanityId) => {
+      const product = products.find((p) => p.sanity_id === sanityId);
+      return product ? product.name : "Unknown Product";
+    },
+    [products]
+  );
 
-  const getProductName = (sanityId) => {
-    const product = products.find((p) => p.sanity_id === sanityId);
-    return product ? product.name : "Unknown Product";
+  const handleDeclineClick = () => {
+    setIsDeclineModalOpen(true);
   };
 
-  if (!order) {
-    return null;
-  }
+  const handleConfirmDecline = (reason) => {
+    onDecline(order.id, reason);
+    setIsDeclineModalOpen(false);
+  };
 
-  const isOrderPending = order.status === "PENDING";
+  if (!order) return null;
 
   return (
-    <div className="orderItem">
-      <div className="orderHeader" onClick={toggleExpand}>
+    <div className={styles.orderItem}>
+      <div
+        className={styles.orderHeader}
+        onClick={() => setExpanded(!expanded)}
+      >
         <span>
-          Order #{order.id || "N/A"} - RM
-          {order.total_amount?.toFixed(2) || "N/A"}
+          Order #{order.id} - RM{order.total_amount?.toFixed(2)}
         </span>
-        <span className="orderStatus">{order.status}</span>
+        <span className={styles.orderStatus}>{order.status}</span>
         {expanded ? <FaChevronUp /> : <FaChevronDown />}
       </div>
+
       {expanded && (
-        <div className="orderDetails">
-          <div className="orderInfo">
-            <div className="customerInfo">
+        <div className={styles.orderDetails}>
+          <div className={styles.infoSection}>
+            <div className={styles.customerInfo}>
               <h3>
                 <FaUser /> Customer Information
               </h3>
               <p>
-                <strong>Name:</strong> {order.customer_name || "N/A"}
+                <strong>Name:</strong> {order.customer_name}
               </p>
               <p>
-                <strong>Email:</strong> {order.customer_email || "N/A"}
+                <strong>Email:</strong> {order.customer_email}
               </p>
               <p>
-                <strong>Phone:</strong> {order.customer_phone || "N/A"}
+                <strong>Phone:</strong> {order.customer_phone}
               </p>
               <p>
                 <strong>Date:</strong>{" "}
-                {order.created_at
-                  ? new Date(order.created_at).toLocaleString()
-                  : "N/A"}
+                {new Date(order.created_at).toLocaleString()}
               </p>
             </div>
-            {order.delivery_address && (
-              <div className="deliveryInfo">
-                <h3>
-                  <FaMapMarkerAlt /> Delivery Address
-                </h3>
-                <p>{order.delivery_address.address_line1}</p>
-                {order.delivery_address.address_line2 && (
-                  <p>{order.delivery_address.address_line2}</p>
-                )}
-                <p>
-                  {order.delivery_address.city}, {order.delivery_address.state}{" "}
-                  {order.delivery_address.postal_code}
-                </p>
-                <p>{order.delivery_address.country}</p>
-              </div>
-            )}
+            <div className={styles.deliveryInfo}>
+              <h3>
+                <FaMapMarkerAlt /> Delivery Address
+              </h3>
+              <p>{order.delivery_address?.address_line1}</p>
+              <p>{order.delivery_address?.address_line2}</p>
+              <p>
+                {order.delivery_address?.city}, {order.delivery_address?.state}{" "}
+                {order.delivery_address?.postal_code}
+              </p>
+              <p>{order.delivery_address?.country}</p>
+            </div>
           </div>
-          <div className="orderItems">
+
+          <div className={styles.orderItems}>
             <h3>
               <FaShoppingCart /> Order Items
             </h3>
@@ -88,62 +94,59 @@ const OrderItem = ({ order, products, onAccept, onDecline }) => {
                 </tr>
               </thead>
               <tbody>
-                {Array.isArray(order.items) && order.items.length > 0 ? (
-                  order.items.map((item, index) => (
-                    <tr key={index}>
-                      <td>{getProductName(item.product_id)}</td>
-                      <td>{item.quantity || "N/A"}</td>
-                      <td>RM {item.price?.toFixed(2) || "N/A"}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="3">No items available</td>
+                {order.items.map((item, index) => (
+                  <tr key={index}>
+                    <td>{getProductName(item.product_id)}</td>
+                    <td>{item.quantity}</td>
+                    <td>RM {item.price.toFixed(2)}</td>
                   </tr>
-                )}
+                ))}
               </tbody>
             </table>
           </div>
-          <div className="orderSummary">
+
+          <div className={styles.orderSummary}>
             <h3>
               <FaMoneyBillWave /> Order Summary
             </h3>
             <p>
               <span>Subtotal:</span>{" "}
               <span>
-                RM
-                {(
-                  (order.total_amount || 0) - (order.delivery_fee || 0)
-                ).toFixed(2)}
+                RM {(order.total_amount - order.delivery_fee).toFixed(2)}
               </span>
             </p>
             <p>
               <span>Delivery Fee:</span>{" "}
-              <span>RM {order.delivery_fee?.toFixed(2) || "N/A"}</span>
+              <span>RM {order.delivery_fee.toFixed(2)}</span>
             </p>
             <p>
               <span>Total:</span>{" "}
-              <span>RM {order.total_amount?.toFixed(2) || "N/A"}</span>
+              <span>RM {order.total_amount.toFixed(2)}</span>
             </p>
           </div>
-          {isOrderPending && (
-            <div className="orderActions">
-              <button
-                onClick={() => onAccept(order.id)}
-                className="acceptButton"
-              >
-                Accept
-              </button>
-              <button
-                onClick={() => onDecline(order.id)}
-                className="declineButton"
-              >
-                Decline
-              </button>
-            </div>
-          )}
+
+          <div className={styles.actionButtons}>
+            <button
+              onClick={() => onAccept(order.id)}
+              className={styles.acceptButton}
+            >
+              Accept
+            </button>
+            <button
+              onClick={handleDeclineClick}
+              className={styles.declineButton}
+            >
+              Decline
+            </button>
+          </div>
         </div>
       )}
+
+      <DeclineModal
+        isOpen={isDeclineModalOpen}
+        onClose={() => setIsDeclineModalOpen(false)}
+        onConfirm={handleConfirmDecline}
+      />
     </div>
   );
 };

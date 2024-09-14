@@ -86,31 +86,45 @@ export const fetchCategories = async (token) => {
   }
 };
 
-export const handleOrderAction = async (orderId, action, token) => {
+export const handleOrderAction = async (
+  orderId,
+  action,
+  token,
+  declineReason = null
+) => {
   try {
     let endpoint;
+    let body = {};
+
     if (action === "accept") {
       endpoint = `${API_URL}/orders/${orderId}/accept_by_shop`;
     } else if (action === "decline") {
       endpoint = `${API_URL}/orders/${orderId}/decline`;
+      body = { decline_reason: declineReason || "" };
     } else {
       throw new Error("Invalid action");
     }
 
     console.log(`Sending ${action} request for order ${orderId}`);
+    console.log("Request payload:", JSON.stringify(body));
+
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(body),
     });
 
     const data = await response.json();
+    console.log(`Response for ${action} order ${orderId}:`, data);
 
     if (!response.ok) {
       console.error(`Server responded with status ${response.status}:`, data);
-      throw new Error(data.detail || `Failed to ${action} order`);
+      throw new Error(
+        data.detail ? JSON.stringify(data.detail) : `Failed to ${action} order`
+      );
     }
 
     console.log(`Order ${orderId} ${action} successful:`, data);
