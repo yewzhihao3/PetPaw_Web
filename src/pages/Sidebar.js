@@ -17,7 +17,7 @@ const Sidebar = ({
     {
       name: "Clinics",
       icon: <FaClinicMedical />,
-      subItems: ["Appointments", "Services", "Staff"],
+      subItems: ["Appointments", "Veterinary Management"],
     },
     { name: "Hotel", icon: <FaHotel /> },
   ];

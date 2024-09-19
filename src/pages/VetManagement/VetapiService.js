@@ -162,13 +162,13 @@ export const declineAppointment = async (appointmentId, declineReason) => {
   }
 };
 
-export const createMedicalRecord = async (petId, medicalRecordData) => {
+export const createMedicalRecord = async (token, petId, medicalRecordData) => {
   try {
-    const response = await api.post(
-      `/pets/${petId}/medical-records`,
+    const response = await axios.post(
+      `${API_URL}/pets/${petId}/medical-records`,
       medicalRecordData,
       {
-        headers: { Authorization: `Bearer ${getAuthToken()}` },
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
@@ -178,18 +178,30 @@ export const createMedicalRecord = async (petId, medicalRecordData) => {
   }
 };
 
-export const createPrescription = async (petId, prescriptionData) => {
+export const createPrescription = async (token, petId, prescriptionData) => {
   try {
     const response = await api.post(
       `/prescriptions/${petId}`,
-      prescriptionData,
       {
-        headers: { Authorization: `Bearer ${getAuthToken()}` },
+        medication_name: prescriptionData.medication_name,
+        dosage: prescriptionData.dosage,
+        instructions: prescriptionData.instructions,
+        start_date: prescriptionData.start_date,
+        end_date: prescriptionData.end_date,
+        veterinarian_id: parseInt(prescriptionData.veterinarian_id, 10),
+        refill_status: prescriptionData.refill_status,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
   } catch (error) {
     console.error("Error creating prescription:", error);
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
+    }
     throw error;
   }
 };
@@ -222,6 +234,85 @@ export const createPrescriptionForOtherPet = async (prescriptionData) => {
     return response.data;
   } catch (error) {
     console.error("Error creating prescription for other pet:", error);
+    throw error;
+  }
+};
+
+//Veterinary Management
+export const getAllVeterinarians = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/veterinarians`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching veterinarians:", error);
+    throw error;
+  }
+};
+
+export const createVeterinarian = async (token, veterinarianData) => {
+  try {
+    const formData = new FormData();
+    for (const key in veterinarianData) {
+      formData.append(key, veterinarianData[key]);
+    }
+    const response = await axios.post(`${API_URL}/veterinarians`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creating veterinarian:", error);
+    throw error;
+  }
+};
+
+export const updateVeterinarian = async (token, id, veterinarianData) => {
+  try {
+    const formData = new FormData();
+    for (const key in veterinarianData) {
+      formData.append(key, veterinarianData[key]);
+    }
+    const response = await axios.put(
+      `${API_URL}/veterinarians/${id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating veterinarian:", error);
+    throw error;
+  }
+};
+
+export const deleteVeterinarian = async (token, id) => {
+  try {
+    const response = await axios.delete(`${API_URL}/veterinarians/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting veterinarian:", error);
+    throw error;
+  }
+};
+
+export const getVeterinarian = async (token, id) => {
+  try {
+    const response = await axios.get(`${API_URL}/veterinarians/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching veterinarian:", error);
     throw error;
   }
 };

@@ -13,6 +13,7 @@ import OrderItem from "../components/Order/OrderItem";
 import OrderHistoryItem from "../components/Order/OrderHistoryItem";
 import MoneyEarned from "../components/Order/MoneyEarned";
 import Appointments from "../pages/VetManagement/Appointments";
+import VeterinaryManagement from "./VetManagement/VeterinaryManagement";
 import { FaShoppingBag, FaHistory, FaSpinner, FaHotel } from "react-icons/fa";
 import styles from "../styles/Dashboard.module.css";
 
@@ -154,20 +155,8 @@ const Dashboard = () => {
     switch (activeSubMenuItem) {
       case "Appointments":
         return <Appointments />;
-      case "Services":
-        return (
-          <div className={styles.clinicSection}>
-            <h2>Clinic Services</h2>
-            <p className={styles.noDataText}>No services available.</p>
-          </div>
-        );
-      case "Staff":
-        return (
-          <div className={styles.clinicSection}>
-            <h2>Clinic Staff</h2>
-            <p className={styles.noDataText}>No staff information available.</p>
-          </div>
-        );
+      case "Veterinary Management":
+        return <VeterinaryManagement />;
       default:
         return null;
     }

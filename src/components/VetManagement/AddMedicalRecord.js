@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   createMedicalRecord,
   createMedicalRecordForOtherPet,
+  getAllVeterinarians,
 } from "../../pages/VetManagement/VetapiService";
 import styles from "../../styles/AddMedicalRecord.module.css";
+import { useAuth } from "../../AuthContext";
 
 const AddMedicalRecord = ({
   petId,
@@ -16,9 +18,24 @@ const AddMedicalRecord = ({
     date: "",
     expiration_date: "",
     description: "",
-    veterinarian: "",
+    veterinarian_id: "",
     clinic_name: "",
   });
+  const [veterinarians, setVeterinarians] = useState([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    fetchVeterinarians();
+  }, []);
+
+  const fetchVeterinarians = async () => {
+    try {
+      const data = await getAllVeterinarians(user.token);
+      setVeterinarians(data);
+    } catch (error) {
+      console.error("Error fetching veterinarians:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,11 +48,16 @@ const AddMedicalRecord = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const medicalRecordData = {
+        ...formData,
+        veterinarian_id: parseInt(formData.veterinarian_id, 10),
+      };
+
       if (petId) {
-        await createMedicalRecord(petId, formData);
+        await createMedicalRecord(user.token, petId, medicalRecordData);
       } else {
-        await createMedicalRecordForOtherPet({
-          ...formData,
+        await createMedicalRecordForOtherPet(user.token, {
+          ...medicalRecordData,
           other_pet_species: otherPetSpecies,
           other_pet_breed: otherPetBreed,
         });
@@ -85,15 +107,21 @@ const AddMedicalRecord = ({
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="veterinarian">Veterinarian:</label>
-          <input
-            type="text"
-            id="veterinarian"
-            name="veterinarian"
-            value={formData.veterinarian}
+          <label htmlFor="veterinarian_id">Veterinarian:</label>
+          <select
+            id="veterinarian_id"
+            name="veterinarian_id"
+            value={formData.veterinarian_id}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Select a veterinarian</option>
+            {veterinarians.map((vet) => (
+              <option key={vet.id} value={vet.id}>
+                {vet.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className={styles.formGroup}>
           <label htmlFor="clinic_name">Clinic Name:</label>
