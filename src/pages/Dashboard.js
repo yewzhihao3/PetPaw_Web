@@ -14,6 +14,8 @@ import OrderHistoryItem from "../components/Order/OrderHistoryItem";
 import MoneyEarned from "../components/Order/MoneyEarned";
 import Appointments from "../pages/VetManagement/Appointments";
 import VeterinaryManagement from "./VetManagement/VeterinaryManagement";
+import RefillRequestManagement from "./VetManagement/RefillRequestManagement";
+import MedicalRecords from "./VetManagement/MedicalRecords";
 import { FaShoppingBag, FaHistory, FaSpinner, FaHotel } from "react-icons/fa";
 import styles from "../styles/Dashboard.module.css";
 
@@ -157,6 +159,10 @@ const Dashboard = () => {
         return <Appointments />;
       case "Veterinary Management":
         return <VeterinaryManagement />;
+      case "Prescriptions & Refill Requests":
+        return <RefillRequestManagement />;
+      case "Medical Records":
+        return <MedicalRecords />;
       default:
         return null;
     }

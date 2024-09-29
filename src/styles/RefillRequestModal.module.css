@@ -1,0 +1,209 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(74, 14, 120, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modalContent h2 {
+  color: #4a0e78;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.modalContent ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.modalContent li {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 0;
+}
+
+.modalContent li:last-child {
+  border-bottom: none;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.actions button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.actions button:nth-child(1) {
+  background-color: #6a1b9a;
+  color: white;
+}
+
+.actions button:nth-child(2) {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.actions button:nth-child(3) {
+  background-color: #7b1fa2;
+  color: white;
+}
+
+.actions button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.modalContent > button {
+  display: block;
+  margin: 30px auto 0;
+  padding: 12px 24px;
+  background-color: #4a0e78;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.modalContent > button:hover {
+  background-color: #6a1b9a;
+  transform: translateY(-2px);
+}
+
+.message {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.message.success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.message.error {
+  background-color: #fce4ec;
+  color: #c2185b;
+}
+
+.prescriptionDetails {
+  margin-bottom: 20px;
+}
+
+.prescriptionDetails button {
+  margin-right: 10px;
+  margin-top: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.prescriptionDetails button:first-child {
+  background-color: #6a1b9a;
+  color: white;
+}
+
+.deleteButton {
+  background-color: #f44336;
+  color: white;
+}
+
+.prescriptionDetails button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  margin-left: 10px;
+}
+
+.statusApproved {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.statusPending {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.statusDenied {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.editForm {
+  margin-top: 20px;
+}
+
+.editForm input,
+.editForm textarea,
+.editForm select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.editForm button {
+  margin-right: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.editForm button:first-child {
+  background-color: #6a1b9a;
+  color: white;
+}
+
+.editForm button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+.editForm button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}

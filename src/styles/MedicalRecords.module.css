@@ -1,0 +1,264 @@
+:root {
+  --primary-purple: #6200ea;
+  --light-purple: #b388ff;
+  --dark-purple: #3700b3;
+  --white: #ffffff;
+  --grey: #f5f5f5;
+  --dark-grey: #333333;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--grey);
+  color: var(--dark-grey);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: var(--primary-purple);
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: 700;
+}
+
+.recordGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.recordCard {
+  background-color: var(--white);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.recordCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cardHeader h3 {
+  font-size: 1.2rem;
+  color: var(--primary-purple);
+  margin: 0;
+}
+
+.date {
+  font-size: 0.9rem;
+  color: var(--dark-grey);
+}
+
+.customerName {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: var(--dark-grey);
+  margin: 0;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: var(--white);
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modalTitle {
+  font-size: 1.8rem;
+  color: var(--primary-purple);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.detailItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.detailLabel {
+  font-size: 0.9rem;
+  color: var(--dark-grey);
+  margin-bottom: 5px;
+}
+
+.detailValue {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.editButton,
+.deleteButton,
+.closeButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.editButton {
+  background-color: var(--primary-purple);
+  color: var(--white);
+}
+
+.deleteButton {
+  background-color: #f44336;
+  color: var(--white);
+}
+
+.closeButton {
+  background-color: var(--grey);
+  color: var(--dark-grey);
+}
+
+.editButton:hover,
+.deleteButton:hover,
+.closeButton:hover {
+  opacity: 0.9;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--dark-grey);
+}
+
+form input[type="text"],
+form input[type="date"],
+form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+form textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.formActions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.formActions button[type="submit"] {
+  background-color: var(--primary-purple);
+  color: var(--white);
+}
+
+.formActions button[type="button"] {
+  background-color: var(--grey);
+  color: var(--dark-grey);
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2rem;
+}
+
+.loading {
+  color: var(--primary-purple);
+}
+
+.error {
+  color: #f44336;
+}
+
+@media (max-width: 768px) {
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .modalContent {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .editButton,
+  .deleteButton,
+  .closeButton {
+    width: 100%;
+  }
+  select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+}

@@ -41,21 +41,22 @@ export const getUserDetails = async (userId) => {
     const response = await api.get(`/users/${userId}`, {
       headers: { Authorization: `Bearer ${getAuthToken()}` },
     });
+    console.log("User details response:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error fetching user details:", error);
+    console.error(`Error fetching user details for ID ${userId}:`, error);
     throw error;
   }
 };
 
-export const getPetDetails = async (pet_id) => {
+export const getPetDetails = async (petId) => {
   try {
-    const response = await api.get(`/pets/${pet_id}`, {
+    const response = await api.get(`/pets/${petId}`, {
       headers: { Authorization: `Bearer ${getAuthToken()}` },
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching pet details:", error);
+    console.error(`Error fetching pet details for ID ${petId}:`, error);
     throw error;
   }
 };
@@ -162,13 +163,27 @@ export const declineAppointment = async (appointmentId, declineReason) => {
   }
 };
 
-export const createMedicalRecord = async (token, petId, medicalRecordData) => {
+// Medical Records
+
+export const getAllMedicalRecords = async () => {
   try {
-    const response = await axios.post(
-      `${API_URL}/pets/${petId}/medical-records`,
+    const response = await api.get("/pets/all-medical-records", {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all medical records:", error);
+    throw error;
+  }
+};
+
+export const createMedicalRecord = async (petId, medicalRecordData) => {
+  try {
+    const response = await api.post(
+      `/pets/${petId}/medical-records`,
       medicalRecordData,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
       }
     );
     return response.data;
@@ -178,19 +193,71 @@ export const createMedicalRecord = async (token, petId, medicalRecordData) => {
   }
 };
 
+export const getMedicalRecords = async (petId) => {
+  try {
+    const response = await api.get(`/pets/${petId}/medical-records`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching medical records:", error);
+    throw error;
+  }
+};
+
+export const updateMedicalRecord = async (
+  petId,
+  recordId,
+  medicalRecordData
+) => {
+  try {
+    const response = await api.put(
+      `/pets/${petId}/medical-records/${recordId}`,
+      medicalRecordData,
+      {
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating medical record:", error);
+    throw error;
+  }
+};
+
+export const deleteMedicalRecord = async (petId, recordId) => {
+  try {
+    const response = await api.delete(
+      `/pets/${petId}/medical-records/${recordId}`,
+      {
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting medical record:", error);
+    throw error;
+  }
+};
+
+// Prescriptions
+export const getPrescriptions = async () => {
+  try {
+    const response = await api.get("/prescriptions", {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching prescriptions:", error);
+    throw error;
+  }
+};
+
 export const createPrescription = async (token, petId, prescriptionData) => {
   try {
     const response = await api.post(
       `/prescriptions/${petId}`,
-      {
-        medication_name: prescriptionData.medication_name,
-        dosage: prescriptionData.dosage,
-        instructions: prescriptionData.instructions,
-        start_date: prescriptionData.start_date,
-        end_date: prescriptionData.end_date,
-        veterinarian_id: parseInt(prescriptionData.veterinarian_id, 10),
-        refill_status: prescriptionData.refill_status,
-      },
+      prescriptionData,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -198,10 +265,94 @@ export const createPrescription = async (token, petId, prescriptionData) => {
     return response.data;
   } catch (error) {
     console.error("Error creating prescription:", error);
-    if (error.response) {
-      console.error("Response data:", error.response.data);
-      console.error("Response status:", error.response.status);
-    }
+    throw error;
+  }
+};
+
+export const updatePrescription = async (prescriptionId, prescriptionData) => {
+  try {
+    const response = await api.put(
+      `/prescriptions/${prescriptionId}`,
+      prescriptionData,
+      {
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating prescription:", error);
+    throw error;
+  }
+};
+
+export const deletePrescription = async (prescriptionId) => {
+  try {
+    const response = await api.delete(`/prescriptions/${prescriptionId}`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting prescription:", error);
+    throw error;
+  }
+};
+
+// Refill Requests
+export const getAllRefillRequests = async () => {
+  try {
+    const response = await api.get("/prescriptions/refill/requests", {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all refill requests:", error);
+    throw error;
+  }
+};
+
+export const getRefillRequests = async (prescriptionId = null) => {
+  try {
+    const url = prescriptionId
+      ? `/prescriptions/${prescriptionId}/refill-requests`
+      : "/prescriptions/refill/requests";
+    const response = await api.get(url, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching refill requests:", error);
+    throw error;
+  }
+};
+
+export const createRefillRequest = async (refillRequestData) => {
+  try {
+    const response = await api.post(
+      "/prescriptions/refill/request",
+      refillRequestData,
+      {
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating refill request:", error);
+    throw error;
+  }
+};
+
+export const updateRefillRequest = async (requestId, refillRequestData) => {
+  try {
+    const response = await api.put(
+      `/prescriptions/refill/request/${requestId}`,
+      refillRequestData,
+      {
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating refill request:", error);
     throw error;
   }
 };
@@ -239,10 +390,25 @@ export const createPrescriptionForOtherPet = async (prescriptionData) => {
 };
 
 //Veterinary Management
-export const getAllVeterinarians = async (token) => {
+export const getVeterinarianDetails = async (veterinarianId) => {
   try {
-    const response = await axios.get(`${API_URL}/veterinarians`, {
-      headers: { Authorization: `Bearer ${token}` },
+    const response = await api.get(`/veterinarians/${veterinarianId}`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Error fetching veterinarian details for ID ${veterinarianId}:`,
+      error
+    );
+    throw error;
+  }
+};
+
+export const getAllVeterinarians = async () => {
+  try {
+    const response = await api.get("/veterinarians", {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
     });
     return response.data;
   } catch (error) {
@@ -251,15 +417,15 @@ export const getAllVeterinarians = async (token) => {
   }
 };
 
-export const createVeterinarian = async (token, veterinarianData) => {
+export const createVeterinarian = async (veterinarianData) => {
   try {
     const formData = new FormData();
     for (const key in veterinarianData) {
       formData.append(key, veterinarianData[key]);
     }
-    const response = await axios.post(`${API_URL}/veterinarians`, formData, {
+    const response = await api.post("/veterinarians", formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getAuthToken()}`,
         "Content-Type": "multipart/form-data",
       },
     });
@@ -270,22 +436,18 @@ export const createVeterinarian = async (token, veterinarianData) => {
   }
 };
 
-export const updateVeterinarian = async (token, id, veterinarianData) => {
+export const updateVeterinarian = async (id, veterinarianData) => {
   try {
     const formData = new FormData();
     for (const key in veterinarianData) {
       formData.append(key, veterinarianData[key]);
     }
-    const response = await axios.put(
-      `${API_URL}/veterinarians/${id}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const response = await api.put(`/veterinarians/${id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error updating veterinarian:", error);
@@ -293,10 +455,10 @@ export const updateVeterinarian = async (token, id, veterinarianData) => {
   }
 };
 
-export const deleteVeterinarian = async (token, id) => {
+export const deleteVeterinarian = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/veterinarians/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
+    const response = await api.delete(`/veterinarians/${id}`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
     });
     return response.data;
   } catch (error) {
@@ -305,14 +467,42 @@ export const deleteVeterinarian = async (token, id) => {
   }
 };
 
-export const getVeterinarian = async (token, id) => {
+export const getVeterinarian = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/veterinarians/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
+    const response = await api.get(`/veterinarians/${id}`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
     });
     return response.data;
   } catch (error) {
     console.error("Error fetching veterinarian:", error);
+    throw error;
+  }
+};
+
+// Fetch all prescriptions refill status
+export const getAllPrescriptions = async () => {
+  try {
+    const response = await api.get("/prescriptions/", {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all prescriptions:", error);
+    throw error;
+  }
+};
+
+export const deleteRefillRequest = async (requestId) => {
+  try {
+    const response = await api.delete(
+      `/prescriptions/refill/request/${requestId}`,
+      {
+        headers: { Authorization: `Bearer ${getAuthToken()}` },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting refill request:", error);
     throw error;
   }
 };

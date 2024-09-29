@@ -63,6 +63,9 @@ const AddPrescription = ({
       onClose();
     } catch (error) {
       console.error("Error creating prescription:", error);
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+      }
       // Handle error (e.g., show error message to user)
     }
   };
