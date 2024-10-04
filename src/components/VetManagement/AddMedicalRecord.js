@@ -53,6 +53,8 @@ const AddMedicalRecord = ({
         veterinarian_id: parseInt(formData.veterinarian_id, 10),
       };
 
+      console.log("Submitting medical record data:", medicalRecordData);
+
       if (petId) {
         await createMedicalRecord(user.token, petId, medicalRecordData);
       } else {
@@ -66,7 +68,20 @@ const AddMedicalRecord = ({
       onClose();
     } catch (error) {
       console.error("Error creating medical record:", error);
-      // Handle error (e.g., show error message to user)
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        alert(
+          `Failed to create medical record: ${JSON.stringify(
+            error.response.data
+          )}`
+        );
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+        alert("Failed to create medical record: No response from server");
+      } else {
+        console.error("Error:", error.message);
+        alert(`Failed to create medical record: ${error.message}`);
+      }
     }
   };
 

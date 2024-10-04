@@ -177,13 +177,14 @@ export const getAllMedicalRecords = async () => {
   }
 };
 
-export const createMedicalRecord = async (petId, medicalRecordData) => {
+export const createMedicalRecord = async (token, petId, medicalRecordData) => {
   try {
+    console.log("Creating medical record with data:", medicalRecordData);
     const response = await api.post(
       `/pets/${petId}/medical-records`,
       medicalRecordData,
       {
-        headers: { Authorization: `Bearer ${getAuthToken()}` },
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;

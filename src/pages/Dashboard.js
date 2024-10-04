@@ -16,6 +16,8 @@ import Appointments from "../pages/VetManagement/Appointments";
 import VeterinaryManagement from "./VetManagement/VeterinaryManagement";
 import RefillRequestManagement from "./VetManagement/RefillRequestManagement";
 import MedicalRecords from "./VetManagement/MedicalRecords";
+import HotelBookingManagement from "./PetHotel/HotelBookingManagement";
+import PetHotelAnalytics from "./PetHotel/PetHotelAnalytics";
 import { FaShoppingBag, FaHistory, FaSpinner, FaHotel } from "react-icons/fa";
 import styles from "../styles/Dashboard.module.css";
 
@@ -168,6 +170,17 @@ const Dashboard = () => {
     }
   };
 
+  const renderHotelContent = () => {
+    switch (activeSubMenuItem) {
+      case "Hotel Booking Management":
+        return <HotelBookingManagement />;
+      case "Pet Hotel Analytics":
+        return <PetHotelAnalytics />;
+      default:
+        return null;
+    }
+  };
+
   const renderContent = () => {
     switch (activeMenuItem) {
       case "Shop":
@@ -175,10 +188,12 @@ const Dashboard = () => {
       case "Clinics":
         return renderClinicContent();
       case "Hotel":
+        return renderHotelContent();
+      case "Grooming Service":
         return (
           <div className={styles.noData}>
             <FaHotel className={styles.noDataIcon} />
-            <p>Hotel management coming soon!</p>
+            <p>Pet Grooming coming soon!</p>
           </div>
         );
       default:

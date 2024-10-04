@@ -5,7 +5,7 @@ import {
   createVeterinarian,
   updateVeterinarian,
   deleteVeterinarian,
-} from "./VetapiService";
+} from "./vet_managamentapiService";
 import styles from "../../styles/VeterinaryManagement.module.css";
 import { FaEdit, FaTrash, FaTimes, FaPlus } from "react-icons/fa";
 
@@ -29,7 +29,7 @@ const VeterinaryManagement = () => {
 
   const fetchVeterinarians = async () => {
     try {
-      const data = await getAllVeterinarians(user.token);
+      const data = await getAllVeterinarians();
       setVeterinarians(data);
     } catch (error) {
       console.error("Error fetching veterinarians:", error);
@@ -48,9 +48,9 @@ const VeterinaryManagement = () => {
     e.preventDefault();
     try {
       if (selectedVet) {
-        await updateVeterinarian(user.token, selectedVet.id, formData);
+        await updateVeterinarian(selectedVet.id, formData);
       } else {
-        await createVeterinarian(user.token, formData);
+        await createVeterinarian(formData);
       }
       fetchVeterinarians();
       setFormData({
@@ -81,7 +81,7 @@ const VeterinaryManagement = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteVeterinarian(user.token, selectedVet.id);
+      await deleteVeterinarian(selectedVet.id);
       fetchVeterinarians();
       setSelectedVet(null);
       setIsModalOpen(false);

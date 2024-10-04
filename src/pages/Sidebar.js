@@ -24,7 +24,12 @@ const Sidebar = ({
         "Medical Records",
       ],
     },
-    { name: "Hotel", icon: <FaHotel /> },
+    {
+      name: "Hotel",
+      icon: <FaHotel />,
+      subItems: ["Hotel Booking Management", "Pet Hotel Analytics"],
+    },
+    { name: "Grooming Service", icon: <FaHotel /> },
   ];
 
   return (

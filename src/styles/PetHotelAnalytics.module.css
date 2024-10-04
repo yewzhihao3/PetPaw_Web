@@ -1,0 +1,125 @@
+.container {
+  padding: 20px;
+  background-color: #f8f8ff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  color: #4a0e78;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.summaryCards {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.card {
+  flex-basis: 30%;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  color: #4a0e78;
+  font-size: 18px;
+}
+
+.card p {
+  font-size: 24px;
+  font-weight: bold;
+  color: #6a0dad;
+}
+
+.chartContainer {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chartContainer h3 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #4a0e78;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 18px;
+  color: #4a0e78;
+}
+
+.error {
+  background-color: #ffe6e6;
+  color: #d8000c;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.timeFrameSelector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.timeFrameButton {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.timeFrameButton.active {
+  background-color: #4a0e78;
+  color: white;
+}
+
+.timeFrameButton:hover {
+  background-color: #e0e0e0;
+}
+
+.timeFrameButton.active:hover {
+  background-color: #3a0b60;
+}
+
+@media (max-width: 768px) {
+  .summaryCards {
+    flex-direction: column;
+  }
+
+  .card {
+    margin-bottom: 20px;
+  }
+
+  .timeFrameSelector {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .timeFrameButton {
+    margin-bottom: 10px;
+  }
+}
