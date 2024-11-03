@@ -1,5 +1,5 @@
 import React from "react";
-import { FaShoppingBag, FaClinicMedical, FaHotel } from "react-icons/fa";
+import { FaShoppingBag, FaClinicMedical, FaHotel, FaCut } from "react-icons/fa";
 import styles from "../styles/Sidebar.module.css";
 
 const Sidebar = ({
@@ -29,7 +29,11 @@ const Sidebar = ({
       icon: <FaHotel />,
       subItems: ["Hotel Booking Management", "Pet Hotel Analytics"],
     },
-    { name: "Grooming Service", icon: <FaHotel /> },
+    {
+      name: "Grooming Service",
+      icon: <FaCut />,
+      subItems: ["Grooming Management", "Grooming Analytics"],
+    },
   ];
 
   return (

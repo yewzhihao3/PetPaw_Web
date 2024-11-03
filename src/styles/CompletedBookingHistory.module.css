@@ -1,0 +1,94 @@
+.bookingList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.bookingItem {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(98, 0, 238, 0.1);
+  transition: all 0.3s ease;
+  border-left: 4px solid #6200ee;
+}
+
+.bookingItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(98, 0, 238, 0.2);
+}
+
+.bookingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.petName {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #3700b3;
+}
+
+.bookingDate {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.bookingDetails {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.bookingTime,
+.bookingDuration {
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.servicesList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.service {
+  background-color: #f3e5f5;
+  color: #6200ee;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.service:hover {
+  background-color: #6200ee;
+  color: white;
+}
+
+.noBookings {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 2rem;
+  background-color: #f3e5f5;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bookingItem {
+  animation: fadeIn 0.5s ease-out forwards;
+}

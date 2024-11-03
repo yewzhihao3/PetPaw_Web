@@ -4,7 +4,6 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
@@ -18,7 +17,6 @@ import {
   FaMoneyBillWave,
   FaChartBar,
   FaChartPie,
-  FaChartLine,
 } from "react-icons/fa";
 import "../../styles/MoneyEarned.css";
 
@@ -32,49 +30,71 @@ const MoneyEarned = ({ allOrders, products, categories }) => {
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [totalProfit, setTotalProfit] = useState(0);
   const [profitMargin, setProfitMargin] = useState(0);
-  const [forecastEarnings, setForecastEarnings] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
 
   const periods = ["This Week", "This Month", "This Quarter", "This Year"];
 
   const filterOrdersByPeriod = useCallback((orders, period) => {
-    const now = new Date();
+    if (orders.length === 0) return [];
+
+    const sortedOrders = [...orders].sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+    const mostRecentDate = new Date(sortedOrders[0].created_at);
+
     let startDate;
     switch (period) {
       case "This Week":
         startDate = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - 7
+          mostRecentDate.getFullYear(),
+          mostRecentDate.getMonth(),
+          mostRecentDate.getDate() - 7
         );
         break;
       case "This Month":
-        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        startDate = new Date(
+          mostRecentDate.getFullYear(),
+          mostRecentDate.getMonth(),
+          1
+        );
         break;
       case "This Quarter":
         startDate = new Date(
-          now.getFullYear(),
-          Math.floor(now.getMonth() / 3) * 3,
+          mostRecentDate.getFullYear(),
+          Math.floor(mostRecentDate.getMonth() / 3) * 3,
           1
         );
         break;
       case "This Year":
-        startDate = new Date(now.getFullYear(), 0, 1);
+        startDate = new Date(mostRecentDate.getFullYear(), 0, 1);
         break;
       default:
         startDate = new Date(0);
     }
-    return orders.filter((order) => new Date(order.created_at) >= startDate);
+    console.log("Start date for filtering:", startDate);
+    console.log("Most recent order date:", mostRecentDate);
+
+    return orders.filter((order) => {
+      const orderDate = new Date(order.created_at);
+      console.log(
+        "Order date:",
+        orderDate,
+        "Is after start date:",
+        orderDate >= startDate
+      );
+      return orderDate >= startDate;
+    });
   }, []);
 
   const calculateEarnings = useCallback((orders) => {
+    console.log("Calculating earnings for orders:", orders);
     const earningsByDate = orders.reduce((acc, order) => {
       const date = new Date(order.created_at).toISOString().split("T")[0];
       acc[date] = (acc[date] || 0) + parseFloat(order.total_amount);
       return acc;
     }, {});
     return Object.entries(earningsByDate).map(([date, amount]) => ({
-      date,
+      date: new Date(date).toLocaleDateString(),
       amount,
     }));
   }, []);
@@ -141,25 +161,30 @@ const MoneyEarned = ({ allOrders, products, categories }) => {
     );
   }, []);
 
-  const calculateForecast = useCallback((earnings) => {
-    if (earnings.length < 2) return 0;
-
-    const dailyChanges = earnings
-      .slice(1)
-      .map((earning, index) => earning.amount - earnings[index].amount);
-    const avgDailyChange =
-      dailyChanges.reduce((sum, change) => sum + change, 0) /
-      dailyChanges.length;
-    const lastEarning = earnings[earnings.length - 1].amount;
-    const projectedEarning = lastEarning + avgDailyChange * 30;
-
-    return Math.max(0, projectedEarning).toFixed(2);
-  }, []);
-
   const processData = useCallback(
     (orders, period) => {
+      console.log("Processing data for period:", period);
+      console.log("Number of orders:", orders.length);
+      console.log("Sample order:", orders[0]);
+
+      if (orders.length === 0) {
+        console.log("No orders to process");
+        setEarningsData([]);
+        setTopProducts([]);
+        setRevenueBreakdown([]);
+        setTotalRevenue(0);
+        setTotalProfit(0);
+        setProfitMargin(0);
+        return;
+      }
+
       const filteredOrders = filterOrdersByPeriod(orders, period);
+      console.log("Filtered orders:", filteredOrders.length);
+      console.log("Sample filtered order:", filteredOrders[0]);
+
       const processedEarnings = calculateEarnings(filteredOrders);
+      console.log("Processed earnings:", processedEarnings);
+
       const processedTopProducts = calculateTopProducts(filteredOrders);
       const processedRevenueBreakdown =
         calculateRevenueBreakdown(filteredOrders);
@@ -171,7 +196,6 @@ const MoneyEarned = ({ allOrders, products, categories }) => {
       setTotalRevenue(revenue);
       setTotalProfit(profit);
       setProfitMargin(revenue > 0 ? ((profit / revenue) * 100).toFixed(2) : 0);
-      setForecastEarnings(calculateForecast(processedEarnings));
     },
     [
       filterOrdersByPeriod,
@@ -179,7 +203,6 @@ const MoneyEarned = ({ allOrders, products, categories }) => {
       calculateTopProducts,
       calculateRevenueBreakdown,
       calculateTotals,
-      calculateForecast,
     ]
   );
 
@@ -230,6 +253,16 @@ const MoneyEarned = ({ allOrders, products, categories }) => {
 
     return (
       <g>
+        <text
+          x={cx}
+          y={cy}
+          dy={8}
+          textAnchor="middle"
+          fill={fill}
+          fontSize={16}
+        >
+          {payload.name}
+        </text>
         <Sector
           cx={cx}
           cy={cy}
@@ -257,20 +290,19 @@ const MoneyEarned = ({ allOrders, products, categories }) => {
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
           y={ey}
-          dy={-18}
           textAnchor={textAnchor}
           fill="#333"
-        >
-          {payload.name}
-        </text>
+          fontSize={14}
+        >{`RM ${value.toFixed(2)}`}</text>
         <text
           x={ex + (cos >= 0 ? 1 : -1) * 12}
           y={ey}
           dy={18}
           textAnchor={textAnchor}
           fill="#999"
+          fontSize={14}
         >
-          {`RM ${value.toFixed(2)} (${(percent * 100).toFixed(2)}%)`}
+          {`(${(percent * 100).toFixed(2)}%)`}
         </text>
       </g>
     );
@@ -323,18 +355,23 @@ const MoneyEarned = ({ allOrders, products, categories }) => {
         </h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={earningsData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f5f5f5" />
-            <XAxis dataKey="date" stroke="#666" />
-            <YAxis stroke="#666" />
-            <Tooltip formatter={(value) => `RM ${value.toFixed(2)}`} />
+            <XAxis
+              dataKey="date"
+              scale="point"
+              padding={{ left: 10, right: 10 }}
+            />
+            <YAxis />
+            <Tooltip />
             <Legend />
-            <Bar dataKey="amount" fill="#6a1b9a" name="Earnings" />
+            <Bar dataKey="amount" fill="#8884d8" />
           </BarChart>
         </ResponsiveContainer>
       </div>
       <div className="additional-insights">
         <div className="insight-card top-products">
-          <h3>Top Selling Products</h3>
+          <h3>
+            <FaChartBar /> Top Selling Products
+          </h3>
           <ul>
             {topProducts.map((product, index) => (
               <li key={index}>
@@ -348,52 +385,32 @@ const MoneyEarned = ({ allOrders, products, categories }) => {
           <h3>
             <FaChartPie /> Revenue Breakdown
           </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                activeIndex={activeIndex}
-                activeShape={renderActiveShape}
-                data={revenueBreakdown}
-                cx="50%"
-                cy="50%"
-                innerRadius={0}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-                onMouseEnter={onPieEnter}
-              >
-                {revenueBreakdown.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="insight-card forecast">
-          <h3>
-            <FaChartLine /> Forecast
-          </h3>
-          <p>Next month's projected earnings: RM {forecastEarnings}</p>
-          <div className="forecast-bar">
-            <div
-              className="forecast-progress"
-              style={{
-                width: `${(
-                  (parseFloat(forecastEarnings) / totalRevenue) *
-                  100
-                ).toFixed(2)}%`,
-              }}
-            ></div>
+          <div className="revenue-breakdown-container">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  activeIndex={activeIndex}
+                  activeShape={renderActiveShape}
+                  data={revenueBreakdown}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={80}
+                  outerRadius={120}
+                  fill="#8884d8"
+                  dataKey="value"
+                  onMouseEnter={onPieEnter}
+                >
+                  {revenueBreakdown.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-          <p className="forecast-label">
-            {((parseFloat(forecastEarnings) / totalRevenue - 1) * 100).toFixed(
-              2
-            )}
-            % change expected
-          </p>
         </div>
       </div>
     </div>

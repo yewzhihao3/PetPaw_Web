@@ -56,6 +56,12 @@
   margin-right: 8px;
 }
 
+.period-tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
 .period-tab {
   background-color: transparent;
   border: none;
@@ -68,22 +74,6 @@
 }
 
 .period-tab:hover,
-.period-tab.active {
-  background-color: var(--primary-purple);
-  color: white;
-}
-
-.period-tab {
-  background-color: transparent;
-  border: none;
-  padding: 12px 20px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  flex-grow: 1;
-  font-size: 14px;
-  color: var(--dark-purple);
-}
-
 .period-tab.active {
   background-color: var(--primary-purple);
   color: white;
@@ -141,14 +131,21 @@
 .additional-insights {
   display: flex;
   justify-content: space-between;
+  gap: 24px;
 }
 
 .insight-card {
   background-color: var(--card-background);
   border-radius: 8px;
   padding: 20px;
-  width: 30%;
+  flex-basis: calc(50% - 12px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.insight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .insight-card h3 {
@@ -174,74 +171,50 @@
   justify-content: space-between;
   margin-bottom: 12px;
   font-size: 14px;
-}
-
-.forecast p {
-  font-size: 14px;
-  margin-bottom: 12px;
-}
-
-.forecast-bar {
-  height: 8px;
-  background-color: var(--border-color);
+  padding: 8px;
   border-radius: 4px;
-  overflow: hidden;
+  transition: background-color 0.3s ease;
 }
 
-.forecast-progress {
-  height: 100%;
-  background-color: var(--primary-purple);
+.top-products li:hover {
+  background-color: rgba(106, 27, 154, 0.1);
 }
 
-.forecast-label {
-  font-size: 12px;
-  color: var(--text-light);
-  text-align: right;
-  margin-top: 8px;
-}
-
-.insight-card.revenue-breakdown {
+.revenue-breakdown-container {
+  height: 300px;
   position: relative;
 }
 
-.insight-card.revenue-breakdown .recharts-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 @keyframes pieJump {
-  0% {
+  0%,
+  100% {
     transform: translateY(0);
-  }
-  25% {
-    transform: translateY(-3px);
   }
   50% {
     transform: translateY(-5px);
   }
-  75% {
-    transform: translateY(-3px);
-  }
-  100% {
-    transform: translateY(0);
-  }
 }
 
 .recharts-sector:hover {
-  animation: pieJump 1s ease-in-out infinite;
-  transform-origin: center center;
+  animation: pieJump 0.5s ease-in-out infinite;
 }
 
-@media (max-width: 768px) {
-  .summary-stats,
+@media (max-width: 1024px) {
   .additional-insights {
     flex-direction: column;
   }
 
-  .stat-item,
   .insight-card {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .summary-stats {
+    flex-direction: column;
+  }
+
+  .stat-item {
     width: 100%;
     margin-bottom: 16px;
   }

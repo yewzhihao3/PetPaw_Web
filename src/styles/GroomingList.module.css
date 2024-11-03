@@ -1,0 +1,164 @@
+.list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.listItem {
+  background-color: #ffffff;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listItem:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.button {
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+.acceptButton {
+  background-color: #4caf50;
+  color: #ffffff;
+}
+
+.acceptButton:hover {
+  background-color: #45a049;
+}
+
+.declineButton {
+  background-color: #f44336;
+  color: #ffffff;
+}
+
+.declineButton:hover {
+  background-color: #d32f2f;
+}
+
+.deleteButton {
+  background-color: #9e9e9e;
+  color: #ffffff;
+}
+
+.deleteButton:hover {
+  background-color: #757575;
+}
+
+.inProgressButton {
+  background-color: #2196f3;
+  color: #ffffff;
+}
+
+.inProgressButton:hover {
+  background-color: #1e88e5;
+}
+
+.cancelButton {
+  background-color: #ff9800;
+  color: #ffffff;
+}
+
+.cancelButton:hover {
+  background-color: #f57c00;
+}
+
+.completeButton {
+  background-color: #8bc34a;
+  color: #ffffff;
+}
+
+.completeButton:hover {
+  background-color: #7cb342;
+}
+
+.bookingDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bookingUser {
+  font-weight: bold;
+  color: #4a0072;
+}
+
+.bookingPet {
+  font-style: italic;
+  color: #666;
+}
+
+.bookingDateTime {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.bookingStatus {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+}
+
+.bookingStatus.pending {
+  background-color: #fbc02d;
+  color: white;
+}
+
+.bookingStatus.confirmed {
+  background-color: #4caf50;
+  color: white;
+}
+
+.bookingStatus.in_progress {
+  background-color: #2196f3;
+  color: white;
+}
+
+.bookingStatus.completed {
+  background-color: #8bc34a;
+  color: white;
+}
+
+.bookingStatus.cancelled {
+  background-color: #ffcdd2;
+  color: #f44336;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.listItem {
+  animation: slideIn 0.3s ease-out forwards;
+}

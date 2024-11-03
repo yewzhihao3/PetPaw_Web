@@ -1,0 +1,173 @@
+.container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.container:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+.title {
+  color: #6200ee;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 50px;
+  height: 3px;
+  background-color: #6200ee;
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.container:hover .title::after {
+  width: 100px;
+}
+
+.section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #f3e5f5;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.section:hover {
+  background-color: #e1bee7;
+  transform: scale(1.02);
+}
+
+.sectionTitle {
+  color: #4a0072;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.5rem;
+  color: #6200ee;
+}
+
+.error {
+  color: #f44336;
+  text-align: center;
+  padding: 1rem;
+  background-color: #ffebee;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (forced-colors: active) {
+  .button,
+  .submitButton,
+  .timeSelectButton {
+    border: 2px solid currentColor;
+  }
+}
+
+.tabContainer {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tabButton {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: transparent;
+  border: 2px solid transparent;
+  color: #6200ee;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  border-radius: 4px 4px 0 0;
+}
+
+.tabButton::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #6200ee;
+  transition: width 0.3s ease;
+}
+
+.tabButton:hover {
+  background-color: white;
+  border-color: #6200ee;
+  border-bottom-color: transparent;
+}
+
+.tabButton:hover::after {
+  width: 100%;
+}
+
+.activeTab {
+  color: #3700b3;
+  background-color: white;
+  border-color: #6200ee;
+  border-bottom-color: white;
+}
+
+.activeTab::after {
+  width: 100%;
+}
+
+.content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
